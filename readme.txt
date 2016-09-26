@@ -19,9 +19,6 @@ mai1226 - 15/12/2012 - 8:15
 Prosthiki external jar(objectdb.jar) sto build path tou project me ti gnosti diadikasia.
 H synthiki episis leei pos oti external libraries einai na xrisimopoihsoume se ena project,
 prepei na ta bazoume prota se ena fakelo lib (dld ..\videoclub\lib\blabla.jar)
-<<<<<<< HEAD
-kai apo ekei na ta kanoume browse apo to build path kai add.
-=======
 kai apo ekei na ta kanoume browse apo to build path kai add.
 
 mai1226 - 24/12/2012 - 15:00
@@ -43,4 +40,3 @@ mai1226 - 08/01/2013 - 23.00
 
 Prosthiki PersistenceController gia ti diaxeirisi twn connections
 kai genika setarisma stis ypoloipes klasseis
->>>>>>> LK
