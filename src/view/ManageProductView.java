@@ -4,6 +4,7 @@
  */
 package view;
 
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
 
@@ -19,60 +20,54 @@ import dao.ProductDao;
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ManageProductView extends JDialog {
 	
-	private ProductDao pr_model;
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-    private JLabel descriptionLabel;
-    private JScrollPane descriptionScrollPane;
-    private JTextArea descriptionTextArea;
-    private JComboBox genreBox;
-    private JTextField genreField;
-    private JLabel genreLabel;
-    private JLabel headerLabel;
-    private JComboBox ratingBox;
-    private JTextField ratingField;
-    private JLabel ratingLabel;
-    private JButton resetButton;
-    private JButton submitButton;
-    private JTextField titleField;
-    private JLabel titleLabel;
-    private JComboBox typeBox;
-    private JLabel typeLabel;
-    private JComboBox yearBox;
-    private JLabel yearLabel;
-    // End of variables declaration//GEN-END:variables
-    
-    /**
-     * Creates new form ManageProductView
-     */
-    public ManageProductView(java.awt.Frame parent, boolean modal, ProductDao model) {
+    public ManageProductView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        location = parent.getLocation();
+        this.setLocation(location.x + 800, location.y + 0);
+        this.setResizable(false);
+        this.setAlwaysOnTop(true);
     }
     
     //Methods to return the text of the fields 
-    public String getTitleField(){
-    	return titleField.getText();
+    public JLabel getHeaderLabel(){
+    	return headerLabel;
     }
     
-    public String getDescription(){
-    	return descriptionTextArea.getText();
+    public JTextField getTitleField(){
+    	return titleField;
     }
     
-    public int getYear(){
-    	return Integer.parseInt(yearBox.getSelectedItem().toString());
+    public JTextArea getDescription(){
+    	return descriptionTextArea;
     }
     
-    public String getGenre(){
-    	return genreBox.getSelectedItem().toString();
+    public JComboBox getYearBox(){
+    	return yearBox;
     }
     
-    public String getRating(){
-    	return ratingBox.getSelectedItem().toString();
+    public JComboBox getGenreBox(){
+    	return genreBox;
     }
     
-    public String getTypeBox(){
-    	return typeBox.getSelectedItem().toString();
+    public JComboBox getRatingBox(){
+    	return ratingBox;
+    }
+    
+    public JComboBox getTypeBox(){
+    	return typeBox;
+    }
+    
+    public JButton getSubmitButton(){
+    	return submitButton;
+    }
+    
+    public JButton getResetButton(){
+    	return resetButton;
+    }
+    
+    public JButton getEditButton(){
+    	return editButton;
     }
 
     /**
@@ -92,14 +87,13 @@ public class ManageProductView extends JDialog {
         genreLabel = new JLabel();
         titleField = new JTextField();
         yearBox = new JComboBox();
-        ratingField = new JTextField();
-        genreField = new JTextField();
         ratingBox = new JComboBox();
         titleLabel = new JLabel();
         genreBox = new JComboBox();
         headerLabel = new JLabel();
         resetButton = new JButton();
         submitButton = new JButton();
+        editButton = new JButton();
         typeBox = new JComboBox();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -120,114 +114,108 @@ public class ManageProductView extends JDialog {
         genreLabel.setText("Genre");
 
         yearBox.setModel(new DefaultComboBoxModel(populateYears()));
-
-        ratingField.setEnabled(false);
-        ratingField.setVisible(false);
-
-        genreField.setEnabled(false);
-        genreField.setVisible(false);
+        yearBox.setSelectedIndex(0);
 
         ratingBox.setModel(new DefaultComboBoxModel(populateRatings()));
-
+        ratingBox.setSelectedIndex(0);
+        
         titleLabel.setText("Title");
 
         genreBox.setModel(new DefaultComboBoxModel(populateGenres()));
-
-        headerLabel.setFont(new java.awt.Font("Ubuntu", 3, 18)); // NOI18N
+        genreBox.setSelectedIndex(0);
+        
+        headerLabel.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
         headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         headerLabel.setText("Add New Movie");
 
         resetButton.setText("Reset");
 
         submitButton.setText("Add Movie");
+        
+        editButton.setText("Edit Movie");
+        editButton.setEnabled(false);
+        editButton.setVisible(false);
 
         typeBox.setModel(new DefaultComboBoxModel(populateTypes()));
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                    .addComponent(headerLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(descriptionLabel)
-                    .addComponent(descriptionScrollPane)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(resetButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(submitButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-                    .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(titleLabel)
-                            .addComponent(genreLabel))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(titleField, GroupLayout.PREFERRED_SIZE, 266, GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(yearLabel)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(yearBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(editButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(submitButton, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
+                        .addComponent(descriptionScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(headerLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(descriptionLabel)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(titleLabel)
+                                    .addComponent(genreLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(genreBox, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(genreBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(15, 15, 15)
                                         .addComponent(ratingLabel)
-                                        .addGap(11, 11, 11))
+                                        .addGap(11, 11, 11)
+                                        .addComponent(ratingBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(6, 6, 6)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(genreField, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(92, 92, 92)))
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(ratingField)
-                                    .addComponent(ratingBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(34, 34, 34)
-                                .addComponent(typeLabel)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(typeBox, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                                        .addComponent(yearLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(yearBox, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(typeLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(typeBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(headerLabel)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(titleLabel)
-                            .addComponent(yearLabel)
-                            .addComponent(titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(yearBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(genreLabel)
-                            .addComponent(ratingLabel)
-                            .addComponent(genreBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ratingBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(typeLabel)
-                            .addComponent(typeBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49))
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(genreField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ratingField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(descriptionLabel, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(descriptionScrollPane, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addContainerGap()
+                .addComponent(headerLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(titleLabel)
+                    .addComponent(yearLabel)
+                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(yearBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(genreLabel)
+                    .addComponent(ratingLabel)
+                    .addComponent(genreBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ratingBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(typeLabel)
+                    .addComponent(typeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
+                .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(descriptionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(editButton)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(resetButton)
                     .addComponent(submitButton))
-                .addContainerGap())
+                .addGap(26, 26, 26))
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
     
     public void addSubmitButtonListener(ActionListener submit) {
         submitButton.addActionListener(submit);
@@ -237,17 +225,15 @@ public class ManageProductView extends JDialog {
         resetButton.addActionListener(reset);
     }
     
+    public void addEditButtonListener(ActionListener edit) {
+        editButton.addActionListener(edit);
+    }
+    
     public void reset() {
     	titleField.setText("");
     	yearBox.setSelectedIndex(0);
     	genreBox.setSelectedIndex(0);
-        genreField.setText("");
-        genreField.setEnabled(false);
-        genreField.setVisible(false);
     	ratingBox.setSelectedIndex(0);
-        ratingField.setText("");
-        ratingField.setEnabled(false);
-        ratingField.setVisible(false);
         typeBox.setSelectedIndex(0);
         descriptionTextArea.setText("");
     }
@@ -281,4 +267,26 @@ public class ManageProductView extends JDialog {
 							"Talk-Show", "Thriller", "War", "Western"};
 		return genres;
 	}
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private JLabel descriptionLabel;
+    private JScrollPane descriptionScrollPane;
+    private JTextArea descriptionTextArea;
+    private JComboBox genreBox;
+    private JLabel genreLabel;
+    private JLabel headerLabel;
+    private JComboBox ratingBox;
+    private JLabel ratingLabel;
+    private JButton resetButton;
+    private JButton submitButton;
+    private JButton editButton;
+    private JTextField titleField;
+    private JLabel titleLabel;
+    private JComboBox typeBox;
+    private JLabel typeLabel;
+    private JComboBox yearBox;
+    private JLabel yearLabel;
+    private Point location;
+    // End of variables declaration//GEN-END:variables
+    
 }
